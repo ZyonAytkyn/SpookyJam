@@ -18,6 +18,15 @@ void APlayerCharacter::BeginPlay()
 	
 }
 
+void APlayerCharacter::SpawnObject()
+{
+	FActorSpawnParameters SpawnParams;
+	FVector loc = GetActorLocation();
+	FTransform(FVector(0, 0, 0), FVector(0, 0, 0), FVector(0, 0, ), loc);
+	FRotator rot = GetActorRotation();
+	AActor* SpawnedActorRef = GetWorld()->SpawnActor<AActor>(ActorToSpawn, loc, rot, SpawnParams);
+}
+
 // Called every frame
 void APlayerCharacter::Tick(float DeltaTime)
 {
@@ -31,7 +40,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis(TEXT("MoveUp"), this, &APlayerCharacter::MoveUp);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &APlayerCharacter::MoveRight);
-
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::SpawnObject);
 }
 
 void APlayerCharacter::MoveUp(float AxisVal)
